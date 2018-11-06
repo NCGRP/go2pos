@@ -55,9 +55,9 @@ for i in $q3;
   do b=$(grep "$i" <(echo "$s") | cut -d$'\t' -f1,4,5 | sed 's/'$csub'//g';) # extract the chromosome, gene start, gene end from gff3
     if [ "$b" = "" ]; then echo "Warning. Gene name $i not found in gff3 file." >> log.txt; continue; fi;
     chr=$(echo "$b" | cut -d$'\t' -f1); #chromosome
-    gs=$(echo "$b" | cut -d$'\t' -f3); #gene start
+    gs=$(echo "$b" | cut -d$'\t' -f2); #gene start
     ge=$(echo "$b" | cut -d$'\t' -f3); #gene end
-    echo "$i     $chr"."$gs":"$chr"."$ge"; #output gene locations in format for haplotypista input
+    echo "$i     $chr"."$gs":"$chr"."$ge"; #output gene locations to stdout in human readable format
     echo "$chr"."$gs":"$chr"."$ge" >> "$of"; #output gene locations in format for haplotypista input
   done;
 
@@ -73,7 +73,9 @@ q2=$(awk -F$'\t' '$3 == "gene"' "Ptrichocarpa_156_gene.gff3" | cut -d$'\t' -f9 |
 for i in {1..16}; do echo -n "$i: "; echo "$q2" | cut -c$i | sort -u | tr "\n" ","; echo; done; #determine all possible characters to make up the regex
 
 #pipe the results file to haplotypista
-cat /Volumes/J22/M+\ Study/Analysis/Final\ analysis\ for\ 3rd\ paper/go2pos/Atgo2pos.txt | ./haplotypista -i AtExample.txt -o atout -l atlog.txt -b 1 4 -m ? -p 1 -v Atpopid.txt;
+cd /Volumes/attica/Desktop/Attica-Pats\ Folder/Scripts/Haplotype\ analysis/haplotypista; 
+head /Volumes/attica/Desktop/Attica-Pats\ Folder/Scripts/go2pos/Atgo2pos.txt | ./haplotypista -i AtExample.txt -o atout -b 1 4 -m ? -p 1 -v Atpopid.txt;
+cat /Volumes/attica/Desktop/Attica-Pats\ Folder/Scripts/go2pos/Atgo2pos.txt | ./haplotypista -i AtExample.txt -o atout -b 1 4 -m ? -p 1 -v Atpopid.txt;
 
 echo "5.26300478:5.26300478
 5.26519242:5.26519242

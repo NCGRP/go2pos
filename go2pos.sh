@@ -67,11 +67,17 @@ rm -f tmpg2p.*; #clean up any old temporary files
 
 
 
-
+#SOME TOOLS FOR USING GO2POS"
 #query the gff3 file for all possible gene names, determine a regex to represent it
 q2=$(awk -F$'\t' '$3 == "gene"' "Ptrichocarpa_156_gene.gff3" | cut -d$'\t' -f9 | cut -d\; -f1 | sed 's/ID=//g');
 for i in {1..16}; do echo -n "$i: "; echo "$q2" | cut -c$i | sort -u | tr "\n" ","; echo; done; #determine all possible characters to make up the regex
 
+#pipe the results file to haplotypista
+cat /Volumes/J22/M+\ Study/Analysis/Final\ analysis\ for\ 3rd\ paper/go2pos/Atgo2pos.txt | ./haplotypista -i AtExample.txt -o atout -l atlog.txt -b 1 4 -m ? -p 1 -v Atpopid.txt;
+
+echo "5.26300478:5.26300478
+5.26519242:5.26519242
+5.26712971:5.26712971" | ./haplotypista -i AtExample.txt -o atout -l atlog.txt -b 1 4 -m ? -p 1 -v Atpopid.txt;
 
 
 1.75000:1.1000000,14.8697509:14.8697509
